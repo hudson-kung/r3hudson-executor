@@ -68,10 +68,10 @@ function showDownloadModal(platform) {
             </div>
             <div class="modal-body">
                 <div class="download-info">
-                    <i class="fab fa-${platform === 'windows' ? 'windows' : 'android'}"></i>
-                    <h4>${platform === 'windows' ? 'Windows' : 'Android'} Version</h4>
-                    <p>Version: ${platform === 'windows' ? 'v2.4.1' : 'v1.8.3'}</p>
-                    <p>Size: ${platform === 'windows' ? '45.2 MB' : '28.7 MB'}</p>
+                    <i class="fab fa-apple"></i>
+                    <h4>iOS Version</h4>
+                    <p>Version: v3.0.1</p>
+                    <p>Size: 52.8 MB</p>
                 </div>
                 <div class="modal-actions">
                     <button class="btn-primary" onclick="startDownload('${platform}')">
@@ -227,10 +227,10 @@ function closeModal() {
 function startDownload(platform) {
     // Simulate download start
     closeModal();
-    showNotification(`Download started for ${platform === 'windows' ? 'Windows' : 'Android'} version!`);
+    showNotification('Download started for iOS version!');
     
     // In a real application, you would initiate the actual download here
-    console.log(`Starting download for ${platform}...`);
+    console.log('Starting download for iOS...');
 }
 
 function showNotification(message) {
