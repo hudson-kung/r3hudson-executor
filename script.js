@@ -296,6 +296,136 @@ function showNotification(message) {
     }, 3000);
 }
 
+function showUnavailableNotice() {
+    // Create unavailable notice modal
+    const modal = document.createElement('div');
+    modal.className = 'unavailable-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Currently Unavailable</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>R3Hudson Executor is currently unavailable for download.</p>
+                <p>We're working on updates and will be back soon!</p>
+                <div class="alternative-options">
+                    <h4>Alternative Executors:</h4>
+                    <button class="btn-external" onclick="window.open('https://delta-roblox.com', '_blank'); closeModal();">
+                        <i class="fas fa-external-link-alt"></i> Try Delta Executor
+                    </button>
+                    <button class="btn-external" onclick="window.open('https://codex.lol', '_blank'); closeModal();">
+                        <i class="fas fa-external-link-alt"></i> Try Codex Executor
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Add modal styles
+    const style = document.createElement('style');
+    style.textContent = `
+        .unavailable-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .unavailable-modal .modal-content {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            max-width: 400px;
+            width: 90%;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        .unavailable-modal .modal-header {
+            background: var(--warning-color);
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .unavailable-modal .modal-header h3 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .unavailable-modal .modal-body {
+            padding: 2rem;
+        }
+
+        .unavailable-modal .modal-body p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .alternative-options {
+            margin-top: 1.5rem;
+        }
+
+        .alternative-options h4 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .alternative-options button {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    `;
+
+    // Add styles to head if not already added
+    if (!document.querySelector('style[data-unavailable-styles]')) {
+        style.setAttribute('data-unavailable-styles', 'true');
+        document.head.appendChild(style);
+    }
+
+    // Add modal to body
+    document.body.appendChild(modal);
+
+    // Add event listeners
+    const closeBtn = modal.querySelector('.modal-close');
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+}
+
 // Navbar scroll effect
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');

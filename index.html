@@ -42,14 +42,11 @@
                 Built for performance, stability, and ease of use.
             </p>
             <div class="hero-buttons">
-                <button class="btn-primary" onclick="scrollToDownload()">
+                <button class="btn-primary disabled" onclick="showUnavailableNotice()">
                     <i class="fas fa-download"></i> Download Now
                 </button>
                 <button class="btn-secondary" onclick="scrollToFeatures()">
                     <i class="fas fa-star"></i> View Features
-                </button>
-                <button class="btn-external" onclick="window.open('https://delta-roblox.com', '_blank')">
-                    <i class="fas fa-external-link-alt"></i> Visit Delta
                 </button>
             </div>
         </div>
@@ -155,7 +152,7 @@
                             <i class="fas fa-shield-alt"></i> Undetected
                         </span>
                     </div>
-                    <button class="btn-primary" onclick="scrollToDownload()">
+                    <button class="btn-primary disabled" onclick="showUnavailableNotice()">
                         Download Now
                     </button>
                 </div>
@@ -207,6 +204,10 @@
                 <div class="download-info">
                     <h3>Get Started Today</h3>
                     <p>Download the latest version of R3Hudson Executor and start dominating your favorite Roblox games.</p>
+                    <div class="unavailable-notice">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span><strong>Notice:</strong> R3Hudson Executor is currently unavailable for download. Please check back later.</span>
+                    </div>
                     <ul class="download-features">
                         <li><i class="fas fa-check"></i> Free to use</li>
                         <li><i class="fas fa-check"></i> Regular updates</li>
@@ -215,10 +216,10 @@
                     </ul>
                 </div>
                 <div class="download-buttons">
-                    <button class="download-btn" onclick="handleDownload('ios')">
+                    <button class="download-btn disabled" onclick="showUnavailableNotice()">
                         <i class="fab fa-apple"></i>
                         <span>Download for iOS</span>
-                        <small>v3.0.1 • 52.8 MB</small>
+                        <small>v3.0.1 • 52.8 MB • Unavailable</small>
                     </button>
                 </div>
             </div>
