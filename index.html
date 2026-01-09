@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R3Hudson Executor - Advanced Roblox Exploiting Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-terminal"></i>
+                <span>R3Hudson</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#download">Download</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">R3Hudson Executor</h1>
+            <p class="hero-subtitle">Advanced Roblox Exploiting Device</p>
+            <p class="hero-description">
+                Experience the next generation of Roblox script execution with our cutting-edge executor. 
+                Built for performance, stability, and ease of use.
+            </p>
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="scrollToDownload()">
+                    <i class="fas fa-download"></i> Download Now
+                </button>
+                <button class="btn-secondary" onclick="scrollToFeatures()">
+                    <i class="fas fa-star"></i> View Features
+                </button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="terminal-mockup">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="btn-red"></span>
+                        <span class="btn-yellow"></span>
+                        <span class="btn-green"></span>
+                    </div>
+                    <span class="terminal-title">R3Hudson Executor</span>
+                </div>
+                <div class="terminal-content">
+                    <div class="terminal-line">
+                        <span class="prompt">></span>
+                        <span class="command">loadscript("fe_kill_all.lua")</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="prompt">></span>
+                        <span class="output">Script loaded successfully!</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="prompt">></span>
+                        <span class="command">execute()</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="prompt">></span>
+                        <span class="output">Script executed - 127 players affected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>Optimized execution engine with minimal latency and maximum performance</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Undetected</h3>
+                    <p>Advanced anti-detection mechanisms keep you safe from game moderators</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Script Hub</h3>
+                    <p>Built-in script hub with hundreds of pre-loaded scripts and games</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync"></i>
+                    </div>
+                    <h3>Auto Updates</h3>
+                    <p>Automatic updates ensure you always have the latest features</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Customizable UI</h3>
+                    <p>Modern, clean interface with customizable themes and layouts</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Script Library</h3>
+                    <p>Save and organize your favorite scripts in the built-in library</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download">
+        <div class="container">
+            <h2 class="section-title">Download R3Hudson Executor</h2>
+            <div class="download-content">
+                <div class="download-info">
+                    <h3>Get Started Today</h3>
+                    <p>Download the latest version of R3Hudson Executor and start dominating your favorite Roblox games.</p>
+                    <ul class="download-features">
+                        <li><i class="fas fa-check"></i> Free to use</li>
+                        <li><i class="fas fa-check"></i> Regular updates</li>
+                        <li><i class="fas fa-check"></i> 24/7 support</li>
+                        <li><i class="fas fa-check"></i> No viruses or malware</li>
+                    </ul>
+                </div>
+                <div class="download-buttons">
+                    <button class="download-btn" onclick="handleDownload('windows')">
+                        <i class="fab fa-windows"></i>
+                        <span>Download for Windows</span>
+                        <small>v2.4.1 • 45.2 MB</small>
+                    </button>
+                    <button class="download-btn" onclick="handleDownload('android')">
+                        <i class="fab fa-android"></i>
+                        <span>Download for Android</span>
+                        <small>v1.8.3 • 28.7 MB</small>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About R3Hudson</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>The Ultimate Roblox Exploiting Solution</h3>
+                    <p>
+                        R3Hudson Executor has been the go-to choice for Roblox exploiters since 2020. 
+                        Our commitment to excellence and innovation has made us the most trusted name 
+                        in the Roblox exploiting community.
+                    </p>
+                    <p>
+                        With over 500,000 active users and counting, R3Hudson continues to push the 
+                        boundaries of what's possible in Roblox script execution.
+                    </p>
+                    <div class="stats">
+                        <div class="stat">
+                            <h4>500K+</h4>
+                            <p>Active Users</p>
+                        </div>
+                        <div class="stat">
+                            <h4>1000+</h4>
+                            <p>Available Scripts</p>
+                        </div>
+                        <div class="stat">
+                            <h4>99.9%</h4>
+                            <p>Uptime</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="logo-container">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-terminal"></i>
+                        <span>R3Hudson</span>
+                    </div>
+                    <p>The most advanced Roblox executor on the market.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#download">Download</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 R3Hudson Executor. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
