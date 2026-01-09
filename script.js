@@ -228,9 +228,14 @@ function showDownloadModal(platform) {
 }
 
 function closeModal() {
-    const modal = document.querySelector('.download-modal');
-    if (modal) {
-        modal.remove();
+    const downloadModal = document.querySelector('.download-modal');
+    const unavailableModal = document.querySelector('.unavailable-modal');
+    
+    if (downloadModal) {
+        downloadModal.remove();
+    }
+    if (unavailableModal) {
+        unavailableModal.remove();
     }
 }
 
