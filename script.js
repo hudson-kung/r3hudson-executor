@@ -132,11 +132,21 @@ function showDownloadModal(platform) {
             color: var(--text-secondary);
             font-size: 1.5rem;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 300;
+            line-height: 1;
         }
 
         .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
             color: var(--error-color);
+            transform: rotate(90deg);
         }
 
         .modal-body {
@@ -363,6 +373,28 @@ function showUnavailableNotice() {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .unavailable-modal .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .unavailable-modal .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
         }
 
         .unavailable-modal .modal-body {
