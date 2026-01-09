@@ -153,7 +153,7 @@ body {
     flex-wrap: wrap;
 }
 
-.btn-primary, .btn-secondary {
+.btn-primary, .btn-secondary, .btn-external {
     padding: 1rem 2rem;
     border: none;
     border-radius: 8px;
@@ -187,6 +187,16 @@ body {
     background: var(--light-bg);
     border-color: var(--primary-color);
     color: var(--primary-color);
+}
+
+.btn-external {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+}
+
+.btn-external:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(238, 90, 36, 0.3);
 }
 
 .hero-image {
@@ -602,7 +612,7 @@ body {
         width: 100%;
     }
 
-    .btn-primary, .btn-secondary {
+    .btn-primary, .btn-secondary, .btn-external {
         width: 100%;
         justify-content: center;
     }
