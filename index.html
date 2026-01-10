@@ -6,10 +6,55 @@
     <title>R3Hudson Executor - Advanced Roblox Exploiting Tool</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="executors.css">
+    <link rel="stylesheet" href="subscribe.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Subscribe Modal -->
+    <div id="subscribeModal" class="subscribe-modal">
+        <div class="modal-overlay"></div>
+        <div class="subscribe-content">
+            <div class="subscribe-header">
+                <h2><i class="fab fa-youtube"></i> Subscribe Required</h2>
+                <p>Please subscribe to both YouTube channels to access R3Hudson Executor</p>
+            </div>
+            <div class="subscribe-channels">
+                <div class="channel-card">
+                    <div class="channel-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <h3>R3hudson</h3>
+                    <button class="btn-subscribe" onclick="openChannel('https://youtube.com/@R3hudson')">
+                        <i class="fab fa-youtube"></i> Subscribe
+                    </button>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="r3hudsonCheck" onchange="checkSubscriptionStatus()">
+                        <label for="r3hudsonCheck">I have subscribed</label>
+                    </div>
+                </div>
+                <div class="channel-card">
+                    <div class="channel-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <h3>Kisteven</h3>
+                    <button class="btn-subscribe" onclick="openChannel('https://youtube.com/@Kisteven')">
+                        <i class="fab fa-youtube"></i> Subscribe
+                    </button>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="kistevenCheck" onchange="checkSubscriptionStatus()">
+                        <label for="kistevenCheck">I have subscribed</label>
+                    </div>
+                </div>
+            </div>
+            <button id="accessBtn" class="btn-access" disabled onclick="grantAccess()">
+                <i class="fas fa-lock"></i> Access Site
+            </button>
+        </div>
+    </div>
+
+    <!-- Page Content (Initially Hidden) -->
+    <div id="pageContent" style="display: none;">
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -302,6 +347,7 @@
             </div>
         </div>
     </footer>
+    </div>
 
     <script src="script.js"></script>
 </body>

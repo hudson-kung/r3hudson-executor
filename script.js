@@ -1,3 +1,50 @@
+// Subscribe Modal Functions
+function openChannel(url) {
+    window.open(url, '_blank');
+}
+
+function checkSubscriptionStatus() {
+    const r3hudsonCheck = document.getElementById('r3hudsonCheck').checked;
+    const kistevenCheck = document.getElementById('kistevenCheck').checked;
+    const accessBtn = document.getElementById('accessBtn');
+    
+    if (r3hudsonCheck && kistevenCheck) {
+        accessBtn.disabled = false;
+        accessBtn.innerHTML = '<i class="fas fa-unlock"></i> Access Site';
+    } else {
+        accessBtn.disabled = true;
+        accessBtn.innerHTML = '<i class="fas fa-lock"></i> Access Site';
+    }
+}
+
+function grantAccess() {
+    const modal = document.getElementById('subscribeModal');
+    const pageContent = document.getElementById('pageContent');
+    
+    // Hide modal with animation
+    modal.style.animation = 'fadeOut 0.5s ease';
+    
+    setTimeout(() => {
+        modal.style.display = 'none';
+        pageContent.style.display = 'block';
+        
+        // Show success notification
+        showNotification('Welcome to R3Hudson Executor!');
+        
+        // Store access in localStorage
+        localStorage.setItem('r3hudson_access_granted', 'true');
+    }, 500);
+}
+
+// Check if user already has access
+function checkExistingAccess() {
+    const accessGranted = localStorage.getItem('r3hudson_access_granted');
+    if (accessGranted === 'true') {
+        document.getElementById('subscribeModal').style.display = 'none';
+        document.getElementById('pageContent').style.display = 'block';
+    }
+}
+
 // Mobile Navigation Toggle
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
@@ -511,15 +558,6 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe feature cards and other elements
-document.addEventListener('DOMContentLoaded', () => {
-    const featureCards = document.querySelectorAll('.feature-card');
-    const stats = document.querySelectorAll('.stat');
-    
-    featureCards.forEach(card => observer.observe(card));
-    stats.forEach(stat => observer.observe(stat));
-});
-
 // Add hover effect to download buttons
 document.querySelectorAll('.download-btn').forEach(btn => {
     btn.addEventListener('mouseenter', function() {
@@ -529,6 +567,27 @@ document.querySelectorAll('.download-btn').forEach(btn => {
     btn.addEventListener('mouseleave', function() {
         this.style.transform = 'translateY(0) scale(1)';
     });
+});
+
+// Add fadeOut animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+// Initialize subscribe modal check on page load
+document.addEventListener('DOMContentLoaded', () => {
+    checkExistingAccess();
+    
+    const featureCards = document.querySelectorAll('.feature-card');
+    const stats = document.querySelectorAll('.stat');
+    
+    featureCards.forEach(card => observer.observe(card));
+    stats.forEach(stat => observer.observe(stat));
 });
 
 // Easter egg: Konami code
