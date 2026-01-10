@@ -10,7 +10,7 @@ function checkSubscriptionStatus() {
     
     if (r3hudsonCheck && kistevenCheck) {
         accessBtn.disabled = false;
-        accessBtn.innerHTML = '<i class="fas fa-unlock"></i> Access Site (15s delay)';
+        accessBtn.innerHTML = '<i class="fas fa-unlock"></i> Verify Subscriptions';
     } else {
         accessBtn.disabled = true;
         accessBtn.innerHTML = '<i class="fas fa-lock"></i> Access Site';
@@ -29,32 +29,28 @@ function grantAccess() {
         clearInterval(countdownInterval);
     }
     
-    // Disable button and start countdown
-    accessBtn.disabled = true;
+    // Require 15 seconds before allowing checkbox interaction
     let timeLeft = 15;
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     
-    accessBtn.innerHTML = `<i class="fas fa-clock"></i> Please wait ${timeLeft}s...`;
+    // Disable checkboxes during countdown
+    checkboxes.forEach(checkbox => checkbox.disabled = true);
+    
+    accessBtn.disabled = true;
+    accessBtn.innerHTML = `<i class="fas fa-clock"></i> Processing...`;
     
     countdownInterval = setInterval(() => {
         timeLeft--;
         if (timeLeft > 0) {
-            accessBtn.innerHTML = `<i class="fas fa-clock"></i> Please wait ${timeLeft}s...`;
+            accessBtn.innerHTML = `<i class="fas fa-clock"></i> Processing...`;
         } else {
             clearInterval(countdownInterval);
             
-            // Hide modal with animation
-            modal.style.animation = 'fadeOut 0.5s ease';
+            // Re-enable checkboxes
+            checkboxes.forEach(checkbox => checkbox.disabled = false);
             
-            setTimeout(() => {
-                modal.style.display = 'none';
-                pageContent.style.display = 'block';
-                
-                // Show success notification
-                showNotification('Welcome to R3Hudson Executor!');
-                
-                // Store access in localStorage
-                localStorage.setItem('r3hudson_access_granted', 'true');
-            }, 500);
+            // Show success notification
+            showNotification('Verification complete! You can now access the site.');
         }
     }, 1000);
 }
