@@ -10,30 +10,53 @@ function checkSubscriptionStatus() {
     
     if (r3hudsonCheck && kistevenCheck) {
         accessBtn.disabled = false;
-        accessBtn.innerHTML = '<i class="fas fa-unlock"></i> Access Site';
+        accessBtn.innerHTML = '<i class="fas fa-unlock"></i> Access Site (15s delay)';
     } else {
         accessBtn.disabled = true;
         accessBtn.innerHTML = '<i class="fas fa-lock"></i> Access Site';
     }
 }
 
+let countdownInterval;
+
 function grantAccess() {
     const modal = document.getElementById('subscribeModal');
     const pageContent = document.getElementById('pageContent');
+    const accessBtn = document.getElementById('accessBtn');
     
-    // Hide modal with animation
-    modal.style.animation = 'fadeOut 0.5s ease';
+    // Clear any existing countdown
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+    }
     
-    setTimeout(() => {
-        modal.style.display = 'none';
-        pageContent.style.display = 'block';
-        
-        // Show success notification
-        showNotification('Welcome to R3Hudson Executor!');
-        
-        // Store access in localStorage
-        localStorage.setItem('r3hudson_access_granted', 'true');
-    }, 500);
+    // Disable button and start countdown
+    accessBtn.disabled = true;
+    let timeLeft = 15;
+    
+    accessBtn.innerHTML = `<i class="fas fa-clock"></i> Please wait ${timeLeft}s...`;
+    
+    countdownInterval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+            accessBtn.innerHTML = `<i class="fas fa-clock"></i> Please wait ${timeLeft}s...`;
+        } else {
+            clearInterval(countdownInterval);
+            
+            // Hide modal with animation
+            modal.style.animation = 'fadeOut 0.5s ease';
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+                pageContent.style.display = 'block';
+                
+                // Show success notification
+                showNotification('Welcome to R3Hudson Executor!');
+                
+                // Store access in localStorage
+                localStorage.setItem('r3hudson_access_granted', 'true');
+            }, 500);
+        }
+    }, 1000);
 }
 
 // Check if user already has access
