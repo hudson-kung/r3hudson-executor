@@ -3,22 +3,6 @@ function openChannel(url) {
     window.open(url, '_blank');
 }
 
-function checkSubscriptionStatus() {
-    const r3hudsonCheck = document.getElementById('r3hudsonCheck').checked;
-    const kistevenCheck = document.getElementById('kistevenCheck').checked;
-    const accessBtn = document.getElementById('accessBtn');
-    
-    if (r3hudsonCheck && kistevenCheck) {
-        accessBtn.disabled = false;
-        accessBtn.innerHTML = '<i class="fas fa-unlock"></i> Verify Subscriptions';
-    } else {
-        accessBtn.disabled = true;
-        accessBtn.innerHTML = '<i class="fas fa-lock"></i> Access Site';
-    }
-}
-
-let countdownInterval;
-
 function grantAccess() {
     const modal = document.getElementById('subscribeModal');
     const pageContent = document.getElementById('pageContent');
@@ -29,31 +13,37 @@ function grantAccess() {
         clearInterval(countdownInterval);
     }
     
-    // Require 15 seconds before allowing checkbox interaction
+    // Start 15 second countdown
     let timeLeft = 15;
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    
-    // Disable checkboxes during countdown
-    checkboxes.forEach(checkbox => checkbox.disabled = true);
     
     accessBtn.disabled = true;
-    accessBtn.innerHTML = `<i class="fas fa-clock"></i> Processing...`;
+    accessBtn.innerHTML = `<i class="fas fa-lock"></i> Processing...`;
     
     countdownInterval = setInterval(() => {
         timeLeft--;
         if (timeLeft > 0) {
-            accessBtn.innerHTML = `<i class="fas fa-clock"></i> Processing...`;
+            accessBtn.innerHTML = `<i class="fas fa-lock"></i> Processing...`;
         } else {
             clearInterval(countdownInterval);
             
-            // Re-enable checkboxes
-            checkboxes.forEach(checkbox => checkbox.disabled = false);
+            // Hide modal with animation
+            modal.style.animation = 'fadeOut 0.5s ease';
             
-            // Show success notification
-            showNotification('Verification complete! You can now access the site.');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                pageContent.style.display = 'block';
+                
+                // Show success notification
+                showNotification('Welcome to R3Hudson Executor!');
+                
+                // Store access in localStorage
+                localStorage.setItem('r3hudson_access_granted', 'true');
+            }, 500);
         }
     }, 1000);
 }
+
+let countdownInterval;
 
 // Check if user already has access
 function checkExistingAccess() {
@@ -143,8 +133,8 @@ function showDownloadModal(platform) {
                     <button class="btn-primary" onclick="startDownload('${platform}')">
                         <i class="fas fa-download"></i> Start Download
                     </button>
-                    <button class="btn-secondary" onclick="closeModal()">
-                        Cancel
+                    <button id="accessBtn" class="btn-access" onclick="grantAccess()">
+                        <i class="fas fa-lock"></i> Access Site
                     </button>
                 </div>
             </div>

@@ -28,10 +28,6 @@
                     <button class="btn-subscribe" onclick="openChannel('https://youtube.com/@R3hudson')">
                         <i class="fab fa-youtube"></i> Subscribe
                     </button>
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="r3hudsonCheck" onchange="checkSubscriptionStatus()">
-                        <label for="r3hudsonCheck">I have subscribed</label>
-                    </div>
                 </div>
                 <div class="channel-card">
                     <div class="channel-icon">
@@ -41,13 +37,9 @@
                     <button class="btn-subscribe" onclick="openChannel('https://youtube.com/@Kisteven')">
                         <i class="fab fa-youtube"></i> Subscribe
                     </button>
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="kistevenCheck" onchange="checkSubscriptionStatus()">
-                        <label for="kistevenCheck">I have subscribed</label>
-                    </div>
                 </div>
             </div>
-            <button id="accessBtn" class="btn-access" disabled onclick="grantAccess()">
+            <button id="accessBtn" class="btn-access" onclick="grantAccess()">
                 <i class="fas fa-lock"></i> Access Site
             </button>
         </div>
