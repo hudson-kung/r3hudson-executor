@@ -1,6 +1,6 @@
 // Executor Window Functions
 function openExecutorWindow() {
-    const features = 'width=1200,height=700,scrollbars=yes,resizable=yes,location=no,menubar=no,toolbar=no';
+    const features = 'width=600,height=350,scrollbars=yes,resizable=yes,location=no,menubar=no,toolbar=no';
     const executorWindow = window.open('executor.html', 'R3Hudson Executor', features);
     
     if (executorWindow) {
