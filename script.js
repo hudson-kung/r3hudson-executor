@@ -1,3 +1,315 @@
+// Executor Modal Functions
+function openExecutor() {
+    const modal = document.getElementById('executorModal');
+    modal.style.display = 'block';
+    addConsoleMessage('R3Hudson Executor opened', 'info');
+    addConsoleMessage('Ready to execute scripts', 'success');
+}
+
+function closeExecutor() {
+    const modal = document.getElementById('executorModal');
+    modal.style.display = 'none';
+}
+
+function minimizeExecutor() {
+    const window = document.querySelector('.executor-window');
+    window.classList.toggle('minimized');
+}
+
+function maximizeExecutor() {
+    const window = document.querySelector('.executor-window');
+    window.classList.toggle('maximized');
+}
+
+function switchTab(tab) {
+    // Remove active class from all tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Add active class to clicked tab
+    event.target.classList.add('active');
+    
+    addConsoleMessage(`Switched to ${tab} tab`, 'info');
+}
+
+// Predefined scripts
+const scripts = {
+    fe_kill_all: `-- FE Kill All Script
+local Players = game:GetService("Players")
+for _, player in pairs(Players:GetPlayers()) do
+    if player ~= Players.LocalPlayer then
+        local character = player.Character
+        if character and character:FindFirstChild("Humanoid") then
+            character.Humanoid.Health = 0
+        end
+    end
+end
+print("FE Kill All executed!")`,
+    
+    fly: `-- Fly Script
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+local character = player.Character or player.CharacterAdded:Wait()
+
+local flySpeed = 50
+local flying = false
+local flyPart = Instance.new("Part")
+flyPart.Name = "FlyPart"
+flyPart.Anchored = true
+flyPart.CanCollide = false
+flyPart.Size = Vector3.new(1, 1, 1)
+flyPart.Parent = workspace
+
+mouse.KeyDown:Connect(function(key)
+    if key == "f" then
+        flying = not flying
+        if flying then
+            print("Fly enabled!")
+        else
+            print("Fly disabled!")
+        end
+    end
+end)
+
+game:GetService("RunService").Heartbeat:Connect(function()
+    if flying then
+        local cam = workspace.CurrentCamera
+        flyPart.Position = character.Head.Position
+        character.Humanoid:ChangeState("Freefall")
+        character:MoveTo(cam.CFrame.Position + cam.CFrame.LookVector * flySpeed * 0.1)
+    end
+end)`,
+    
+    esp: `-- ESP Script
+local players = game:GetService("Players")
+local localPlayer = players.LocalPlayer
+
+local function createESP(player)
+    local character = player.Character
+    if not character then return end
+    
+    local highlight = Instance.new("Highlight")
+    highlight.FillColor = Color3.new(1, 0, 0)
+    highlight.FillTransparency = 0.5
+    highlight.OutlineColor = Color3.new(1, 1, 1)
+    highlight.Adornee = character
+    highlight.Parent = character
+    
+    local nameTag = Instance.new("BillboardGui")
+    nameTag.Name = "ESP_Name"
+    nameTag.Size = UDim2.new(0, 100, 0, 50)
+    nameTag.StudsOffset = Vector3.new(0, 3, 0)
+    nameTag.Parent = character.Head
+    
+    local nameLabel = Instance.new("TextLabel")
+    nameLabel.Size = UDim2.new(1, 0, 1, 0)
+    nameLabel.BackgroundTransparency = 1
+    nameLabel.Text = player.Name
+    nameLabel.TextColor3 = Color3.new(1, 1, 1)
+    nameLabel.TextStrokeTransparency = 0
+    nameLabel.Font = Enum.Font.SourceSansBold
+    nameLabel.TextSize = 14
+    nameLabel.Parent = nameTag
+end
+
+for _, player in pairs(players:GetPlayers()) do
+    if player ~= localPlayer then
+        createESP(player)
+    end
+end
+
+players.PlayerAdded:Connect(function(player)
+    if player ~= localPlayer then
+        createESP(player)
+    end
+end)
+
+print("ESP enabled!")`,
+    
+    speed: `-- Speed Script
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+humanoid.WalkSpeed = 50
+humanoid.JumpPower = 100
+
+print("Speed boost enabled!")`,
+    
+    teleport: `-- Teleport Script
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+local character = player.Character or player.CharacterAdded:Wait()
+
+mouse.KeyDown:Connect(function(key)
+    if key == "t" then
+        local targetPos = mouse.Hit.Position
+        character:MoveTo(targetPos)
+        print("Teleported to cursor position!")
+    end
+end)
+
+print("Teleport script loaded! Press T to teleport to cursor position.")`
+};
+
+function loadScript(scriptName) {
+    const scriptInput = document.getElementById('scriptInput');
+    if (scripts[scriptName]) {
+        scriptInput.value = scripts[scriptName];
+        addConsoleMessage(`Loaded script: ${scriptName}`, 'success');
+    } else {
+        addConsoleMessage(`Script not found: ${scriptName}`, 'error');
+    }
+}
+
+function executeScript() {
+    const scriptInput = document.getElementById('scriptInput');
+    const script = scriptInput.value.trim();
+    
+    if (!script) {
+        addConsoleMessage('No script to execute!', 'error');
+        return;
+    }
+    
+    // Simulate script execution
+    addConsoleMessage('Executing script...', 'info');
+    
+    setTimeout(() => {
+        addConsoleMessage('Script executed successfully!', 'success');
+        
+        // Parse script for simulated output
+        if (script.includes('print(')) {
+            const printMatches = script.match(/print\("([^"]+)"\)/g);
+            if (printMatches) {
+                printMatches.forEach(match => {
+                    const message = match.match(/print\("([^"]+)"\)/)[1];
+                    addConsoleMessage(`[OUTPUT] ${message}`, 'info');
+                });
+            }
+        }
+        
+        // Simulate different script types
+        if (script.includes('Kill All')) {
+            addConsoleMessage('Eliminated all players', 'success');
+        } else if (script.includes('Fly')) {
+            addConsoleMessage('Fly mode activated', 'success');
+        } else if (script.includes('ESP')) {
+            addConsoleMessage('ESP enabled for all players', 'success');
+        } else if (script.includes('Speed')) {
+            addConsoleMessage('Speed boost activated', 'success');
+        } else if (script.includes('Teleport')) {
+            addConsoleMessage('Teleport script loaded', 'success');
+        }
+    }, 1000);
+}
+
+function injectScript() {
+    addConsoleMessage('Injecting into Roblox process...', 'warning');
+    
+    setTimeout(() => {
+        addConsoleMessage('Roblox process found', 'success');
+        addConsoleMessage('Injecting DLL...', 'info');
+        
+        setTimeout(() => {
+            addConsoleMessage('Injection successful!', 'success');
+            document.querySelector('.injection-status').textContent = 'Injected';
+            document.querySelector('.injection-status').style.color = 'var(--success-color)';
+            addConsoleMessage('Ready to execute scripts', 'success');
+        }, 1500);
+    }, 1000);
+}
+
+function clearScript() {
+    const scriptInput = document.getElementById('scriptInput');
+    scriptInput.value = '';
+    addConsoleMessage('Script editor cleared', 'info');
+}
+
+function saveScript() {
+    const scriptInput = document.getElementById('scriptInput');
+    const script = scriptInput.value.trim();
+    
+    if (!script) {
+        addConsoleMessage('No script to save!', 'error');
+        return;
+    }
+    
+    // Simulate saving to local storage
+    const scriptName = prompt('Enter script name:');
+    if (scriptName) {
+        localStorage.setItem(`script_${scriptName}`, script);
+        addConsoleMessage(`Script "${scriptName}" saved successfully`, 'success');
+    }
+}
+
+function clearOutput() {
+    const outputConsole = document.getElementById('outputConsole');
+    outputConsole.innerHTML = `
+        <div class="console-line">
+            <span class="console-timestamp">[${getCurrentTime()}]</span>
+            <span class="console-info">Console cleared</span>
+        </div>
+    `;
+}
+
+function addConsoleMessage(message, type = 'info') {
+    const outputConsole = document.getElementById('outputConsole');
+    const timestamp = getCurrentTime();
+    
+    const messageClass = type === 'error' ? 'console-error' : 
+                        type === 'success' ? 'console-success' : 
+                        type === 'warning' ? 'console-warning' : 'console-info';
+    
+    const messageLine = document.createElement('div');
+    messageLine.className = 'console-line';
+    messageLine.innerHTML = `
+        <span class="console-timestamp">[${timestamp}]</span>
+        <span class="${messageClass}">${message}</span>
+    `;
+    
+    outputConsole.appendChild(messageLine);
+    outputConsole.scrollTop = outputConsole.scrollHeight;
+}
+
+function getCurrentTime() {
+    const now = new Date();
+    return now.toLocaleTimeString('en-US', { 
+        hour12: false, 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit' 
+    });
+}
+
+// Close executor when clicking outside
+document.addEventListener('click', (e) => {
+    const modal = document.getElementById('executorModal');
+    const window = document.querySelector('.executor-window');
+    
+    if (modal.style.display === 'block' && 
+        !window.contains(e.target) && 
+        !e.target.closest('button[onclick="openExecutor()"]')) {
+        // Don't close if clicking outside - this keeps it modal-like
+    }
+});
+
+// Keyboard shortcuts for executor
+document.addEventListener('keydown', (e) => {
+    const modal = document.getElementById('executorModal');
+    
+    if (modal.style.display === 'block') {
+        // Ctrl+Enter to execute
+        if (e.ctrlKey && e.key === 'Enter') {
+            executeScript();
+        }
+        // Escape to close
+        else if (e.key === 'Escape') {
+            closeExecutor();
+        }
+    }
+});
+
 // Subscribe Modal Functions
 function openChannel(url) {
     window.open(url, '_blank');
