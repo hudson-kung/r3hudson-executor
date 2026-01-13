@@ -65,42 +65,6 @@
             color: white;
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            margin-right: 1rem;
-        }
-
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.9rem;
-            overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .username {
-            color: white;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
         .executor-title {
             display: flex;
             align-items: center;
@@ -431,12 +395,6 @@
             <div class="executor-title">
                 <i class="fas fa-terminal"></i>
                 <span>R3Hudson Executor v3.0.1</span>
-            </div>
-            <div class="user-info" id="userInfo">
-                <div class="user-avatar" id="userAvatar">
-                    <i class="fas fa-user"></i>
-                </div>
-                <span class="username" id="username">Guest</span>
             </div>
             <div class="executor-controls">
                 <button class="executor-minimize" onclick="minimizeExecutor()">
@@ -822,34 +780,7 @@ print("Teleport script loaded! Press T to teleport to cursor position.")`
         window.addEventListener('load', () => {
             addConsoleMessage('R3Hudson Executor v3.0.1 loaded', 'success');
             addConsoleMessage('Ready to execute scripts', 'info');
-            
-            // Load user info from localStorage
-            const username = localStorage.getItem('roblox_user');
-            if (username) {
-                const userAvatar = document.getElementById('userAvatar');
-                const usernameSpan = document.getElementById('username');
-                
-                if (userAvatar && usernameSpan) {
-                    const avatarUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${getUserIdFromUsername(username)}&width=48&height=48&format=png`;
-                    userAvatar.innerHTML = `<img src="${avatarUrl}" alt="${username}" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\\'fas fa-user\\'></i>';">`;
-                    usernameSpan.textContent = username;
-                    addConsoleMessage(`Logged in as ${username}`, 'success');
-                }
-            } else {
-                addConsoleMessage('Not authenticated - please login from main site', 'warning');
-            }
         });
-
-        function getUserIdFromUsername(username) {
-            // Simple hash function to generate a pseudo-user ID
-            let hash = 0;
-            for (let i = 0; i < username.length; i++) {
-                const char = username.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash; // Convert to 32-bit integer
-            }
-            return Math.abs(hash) % 100000000; // Generate a reasonable user ID
-        }
     </script>
 </body>
 </html>

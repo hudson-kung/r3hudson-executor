@@ -1,166 +1,15 @@
-// Roblox Authentication Functions
-let authenticatedUser = null;
-
-function showAuthModal() {
-    const modal = document.getElementById('authModal');
-    modal.style.display = 'block';
-    
-    // Check if user is already authenticated
-    const savedUser = localStorage.getItem('roblox_user');
-    if (savedUser) {
-        document.getElementById('robloxUsername').value = savedUser;
-        updateAvatarPreview(savedUser);
-    }
-    
-    // Focus on username input
-    setTimeout(() => {
-        document.getElementById('robloxUsername').focus();
-    }, 100);
-}
-
-function hideAuthModal() {
-    const modal = document.getElementById('authModal');
-    modal.style.display = 'none';
-}
-
-function updateAvatarPreview(username) {
-    const avatarPreview = document.getElementById('avatarPreview');
-    if (username && username.length > 0) {
-        // Generate Roblox avatar URL (using their thumbnail API)
-        const avatarUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${getUserIdFromUsername(username)}&width=48&height=48&format=png`;
-        avatarPreview.innerHTML = `<img src="${avatarUrl}" alt="${username}" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\\'fas fa-user\\'></i>';">`;
-    } else {
-        avatarPreview.innerHTML = '<i class="fas fa-user"></i>';
-    }
-}
-
-function getUserIdFromUsername(username) {
-    // Simple hash function to generate a pseudo-user ID
-    // In a real app, you'd use Roblox API to get the actual user ID
-    let hash = 0;
-    for (let i = 0; i < username.length; i++) {
-        const char = username.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Convert to 32-bit integer
-    }
-    return Math.abs(hash) % 100000000; // Generate a reasonable user ID
-}
-
-function authenticateUser() {
-    const username = document.getElementById('robloxUsername').value.trim();
-    const authBtn = document.getElementById('authBtn');
-    
-    if (!username) {
-        showNotification('Please enter your Roblox username!', 'error');
-        return;
-    }
-    
-    if (username.length < 3) {
-        showNotification('Username must be at least 3 characters!', 'error');
-        return;
-    }
-    
-    // Disable button and show loading
-    authBtn.disabled = true;
-    authBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
-    
-    // Simulate authentication process
-    setTimeout(() => {
-        authenticatedUser = username;
-        localStorage.setItem('roblox_user', username);
-        
-        hideAuthModal();
-        showNotification(`Welcome, ${username}!`, 'success');
-        
-        // Open executor after successful authentication
-        setTimeout(() => {
-            openExecutorWindow();
-        }, 1000);
-        
-        // Reset button
-        authBtn.disabled = false;
-        authBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Authenticate';
-    }, 1500);
-}
-
-// Update executor window with user info
-function updateExecutorUserInfo() {
-    const username = localStorage.getItem('roblox_user');
-    if (username) {
-        // Update executor window if it's open
-        const executorWindow = window.open('', 'R3Hudson Executor');
-        if (!executorWindow.closed) {
-            const userAvatar = executorWindow.document.getElementById('userAvatar');
-            const usernameSpan = executorWindow.document.getElementById('username');
-            
-            if (userAvatar && usernameSpan) {
-                const avatarUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${getUserIdFromUsername(username)}&width=48&height=48&format=png`;
-                userAvatar.innerHTML = `<img src="${avatarUrl}" alt="${username}" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\\'fas fa-user\\'></i>';">`;
-                usernameSpan.textContent = username;
-            }
-        }
-    }
-}
-
-// Check authentication on page load
-function checkAuthentication() {
-    const savedUser = localStorage.getItem('roblox_user');
-    if (!savedUser) {
-        // Show auth modal immediately
-        showAuthModal();
-    }
-}
-
-// Modify executor opening function
+// Executor Window Functions
 function openExecutorWindow() {
-    const username = localStorage.getItem('roblox_user');
-    
-    if (!username) {
-        showAuthModal();
-        return;
-    }
-    
     const features = 'width=1200,height=700,scrollbars=yes,resizable=yes,location=no,menubar=no,toolbar=no';
     const executorWindow = window.open('executor.html', 'R3Hudson Executor', features);
     
     if (executorWindow) {
         executorWindow.focus();
-        
-        // Pass user info to executor window
-        executorWindow.addEventListener('load', () => {
-            const userAvatar = executorWindow.document.getElementById('userAvatar');
-            const usernameSpan = executorWindow.document.getElementById('username');
-            
-            if (userAvatar && usernameSpan) {
-                const avatarUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${getUserIdFromUsername(username)}&width=48&height=48&format=png`;
-                userAvatar.innerHTML = `<img src="${avatarUrl}" alt="${username}" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\\'fas fa-user\\'></i>';">`;
-                usernameSpan.textContent = username;
-            }
-        });
-        
-        showNotification('Executor opened for ' + username + '!');
+        showNotification('Executor opened in new window!');
     } else {
         showNotification('Popup blocked! Please allow popups for this site.');
     }
 }
-
-// Add username input event listener
-document.addEventListener('DOMContentLoaded', () => {
-    const usernameInput = document.getElementById('robloxUsername');
-    if (usernameInput) {
-        usernameInput.addEventListener('input', (e) => {
-            updateAvatarPreview(e.target.value);
-        });
-        
-        usernameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                authenticateUser();
-            }
-        });
-    }
-});
-
-// Executor Window Functions
 
 // Subscribe Modal Functions
 function openChannel(url) {
@@ -755,9 +604,6 @@ document.head.appendChild(style);
 // Initialize subscribe modal check on page load
 document.addEventListener('DOMContentLoaded', () => {
     checkExistingAccess();
-    
-    // Check authentication first
-    checkAuthentication();
     
     const featureCards = document.querySelectorAll('.feature-card');
     const stats = document.querySelectorAll('.stat');
