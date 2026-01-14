@@ -377,6 +377,15 @@ body {
     font-size: 0.9rem;
 }
 
+.terminal-title {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.terminal-title i {
+    font-size: 4.5rem;
+}
+
 /* About Section */
 .about {
     padding: 5rem 2rem;
