@@ -653,27 +653,24 @@ print("Teleport script loaded! Press T to teleport to cursor position.")`
                 // Parse and execute actual JavaScript commands
                 try {
                     // Create a safe execution environment
-                    const safeScript = script
+                    let safeScript = script
                         .replace(/game\./g, 'window.robloxGame')
                         .replace(/workspace\./g, 'window.robloxWorkspace')
                         .replace(/Players\./g, 'window.robloxPlayers')
-                        .replace(/LocalPlayer\./g, 'window.robloxLocalPlayer')
-                        .replace(/print\(/g, 'addConsoleMessage(');
+                        .replace(/LocalPlayer\./g, 'window.robloxLocalPlayer');
+                    
+                    // Handle print statements properly
+                    const printRegex = /print\("([^"]+)"\)/g;
+                    let match;
+                    while ((match = printRegex.exec(script)) !== null) {
+                        const message = match[1];
+                        addConsoleMessage(`[OUTPUT] ${message}`, 'info');
+                        safeScript = safeScript.replace(match[0], `// print output: ${message}`);
+                    }
                     
                     // Execute the script in safe context
                     const func = new Function('addConsoleMessage', safeScript);
                     func(addConsoleMessage);
-                    
-                    // Parse script for simulated output
-                    if (script.includes('print(')) {
-                        const printMatches = script.match(/print\("([^"]+)"\)/g);
-                        if (printMatches) {
-                            printMatches.forEach(match => {
-                                const message = match.match(/print\("([^"]+)"\)/)[1];
-                                addConsoleMessage(`[OUTPUT] ${message}`, 'info');
-                            });
-                        }
-                    }
                     
                     // Simulate different script types with actual effects
                     if (script.includes('Kill All')) {
