@@ -6,14 +6,14 @@ function downloadExecutor() {
     
     if (executorWindow) {
         executorWindow.focus();
-        showNotification('Executor UI opened! Download will start automatically...');
+        // Executor UI opened successfully
         
         // Simulate download after opening executor
         setTimeout(() => {
-            showNotification('R3Hudson Executor v3.0.1 ready to use!');
+            // Executor ready to use
         }, 1500);
     } else {
-        showNotification('Popup blocked! Please allow popups for this site to open the executor.');
+        // Popup blocked - please allow popups
     }
 }
 
@@ -53,7 +53,7 @@ function grantAccess() {
                 pageContent.style.display = 'block';
                 
                 // Show success notification
-                showNotification('Welcome to R3Hudson Executor!');
+                // Welcome to R3Hudson Executor!
                 
                 // Store access in localStorage
                 localStorage.setItem('r3hudson_access_granted', 'true');
@@ -64,13 +64,15 @@ function grantAccess() {
 
 let countdownInterval;
 
-// Check if user already has access
+// Check if user already has access (disabled - always show modal)
 function checkExistingAccess() {
-    const accessGranted = localStorage.getItem('r3hudson_access_granted');
-    if (accessGranted === 'true') {
-        document.getElementById('subscribeModal').style.display = 'none';
-        document.getElementById('pageContent').style.display = 'block';
-    }
+    // Always show subscribe modal on page load
+    // Commented out localStorage check to force modal every visit
+    // const accessGranted = localStorage.getItem('r3hudson_access_granted');
+    // if (accessGranted === 'true') {
+    //     document.getElementById('subscribeModal').style.display = 'none';
+    //     document.getElementById('pageContent').style.display = 'block';
+    // }
 }
 
 // Mobile Navigation Toggle
@@ -317,73 +319,10 @@ function closeModal() {
 function startDownload(platform) {
     // Simulate download start
     closeModal();
-    showNotification('Download started for iOS version!');
+    // iOS download started
     
     // In a real application, you would initiate the actual download here
     console.log('Starting download for iOS...');
-}
-
-function showNotification(message) {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.innerHTML = `
-        <i class="fas fa-check-circle"></i>
-        <span>${message}</span>
-    `;
-
-    // Add notification styles
-    const style = document.createElement('style');
-    style.textContent = `
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: var(--success-color);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            z-index: 3000;
-            animation: slideInRight 0.3s ease;
-            max-width: 300px;
-        }
-
-        .notification i {
-            font-size: 1.2rem;
-        }
-
-        @keyframes slideInRight {
-            from { 
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to { 
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-    `;
-
-    // Add styles to head if not already added
-    if (!document.querySelector('style[data-notification-styles]')) {
-        style.setAttribute('data-notification-styles', 'true');
-        document.head.appendChild(style);
-    }
-
-    // Add notification to body
-    document.body.appendChild(notification);
-
-    // Remove notification after 3 seconds
-    setTimeout(() => {
-        notification.style.animation = 'slideInRight 0.3s ease reverse';
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
-    }, 3000);
 }
 
 function showUnavailableNotice() {
@@ -550,28 +489,6 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Terminal typing animation
-function typeTerminalText() {
-    const terminalLines = document.querySelectorAll('.terminal-line');
-    terminalLines.forEach((line, index) => {
-        setTimeout(() => {
-            line.style.opacity = '0';
-            line.style.transform = 'translateX(-20px)';
-            line.style.transition = 'all 0.5s ease';
-            
-            setTimeout(() => {
-                line.style.opacity = '1';
-                line.style.transform = 'translateX(0)';
-            }, 100);
-        }, index * 800);
-    });
-}
-
-// Initialize terminal animation when page loads
-window.addEventListener('load', () => {
-    setTimeout(typeTerminalText, 1000);
-});
-
 // Intersection Observer for fade-in animations
 const observerOptions = {
     threshold: 0.1,
@@ -635,7 +552,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 function activateEasterEgg() {
-    showNotification('🎉 Easter egg activated! You found the secret!');
+    // Easter egg activated!
     document.body.style.animation = 'rainbow 2s ease';
     
     setTimeout(() => {
