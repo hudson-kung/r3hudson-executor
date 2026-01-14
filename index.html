@@ -11,6 +11,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Script Output Console -->
+    <div class="script-output">
+        <div class="console-header">
+            <i class="fas fa-terminal"></i> Script Output
+            <button class="clear-btn" onclick="clearScriptOutput()">Clear</button>
+        </div>
+        <div id="scriptConsole" class="script-console">
+            <div class="console-line">
+                <span class="console-timestamp">[3:40:00 PM]</span>
+                <span class="console-info">R3Hudson Executor initialized</span>
+            </div>
+            <div class="console-line">
+                <span class="console-timestamp">[3:40:01 PM]</span>
+                <span class="console-success">Connected to Roblox</span>
+            </div>
+            <div class="console-line">
+                <span class="console-timestamp">[3:40:02 PM]</span>
+                <span class="console-info">Ready to execute scripts</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Subscribe Modal -->
     <div id="subscribeModal" class="subscribe-modal">
         <div class="modal-overlay"></div>
@@ -95,8 +117,33 @@
             </div>
         </div>
         <div class="hero-image">
-            <div class="hero-graphic">
-                <i class="fas fa-code"></i>
+            <div class="terminal-mockup">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="btn-red"></span>
+                        <span class="btn-yellow"></span>
+                        <span class="btn-green"></span>
+                    </div>
+                    <span class="terminal-title">R3Hudson Executor</span>
+                </div>
+                <div class="terminal-content">
+                    <div class="terminal-line">
+                        <span class="prompt">></span>
+                        <span class="command">loadscript("fe_kill_all.lua")</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="prompt">></span>
+                        <span class="output">Script loaded successfully!</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="prompt">></span>
+                        <span class="command">execute()</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="prompt">></span>
+                        <span class="output">Script executed - 127 players affected</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
