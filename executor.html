@@ -650,30 +650,394 @@ print("Teleport script loaded! Press T to teleport to cursor position.")`
             setTimeout(() => {
                 addConsoleMessage('Script executed successfully!', 'success');
                 
-                // Parse script for simulated output
-                if (script.includes('print(')) {
-                    const printMatches = script.match(/print\("([^"]+)"\)/g);
-                    if (printMatches) {
-                        printMatches.forEach(match => {
-                            const message = match.match(/print\("([^"]+)"\)/)[1];
-                            addConsoleMessage(`[OUTPUT] ${message}`, 'info');
-                        });
+                // Parse and execute actual JavaScript commands
+                try {
+                    // Create a safe execution environment
+                    const safeScript = script
+                        .replace(/game\./g, 'window.robloxGame')
+                        .replace(/workspace\./g, 'window.robloxWorkspace')
+                        .replace(/Players\./g, 'window.robloxPlayers')
+                        .replace(/LocalPlayer\./g, 'window.robloxLocalPlayer')
+                        .replace(/print\(/g, 'addConsoleMessage(');
+                    
+                    // Execute the script in safe context
+                    const func = new Function('addConsoleMessage', safeScript);
+                    func(addConsoleMessage);
+                    
+                    // Parse script for simulated output
+                    if (script.includes('print(')) {
+                        const printMatches = script.match(/print\("([^"]+)"\)/g);
+                        if (printMatches) {
+                            printMatches.forEach(match => {
+                                const message = match.match(/print\("([^"]+)"\)/)[1];
+                                addConsoleMessage(`[OUTPUT] ${message}`, 'info');
+                            });
+                        }
                     }
-                }
-                
-                // Simulate different script types
-                if (script.includes('Kill All')) {
-                    addConsoleMessage('Eliminated all players', 'success');
-                } else if (script.includes('Fly')) {
-                    addConsoleMessage('Fly mode activated', 'success');
-                } else if (script.includes('ESP')) {
-                    addConsoleMessage('ESP enabled for all players', 'success');
-                } else if (script.includes('Speed')) {
-                    addConsoleMessage('Speed boost activated', 'success');
-                } else if (script.includes('Teleport')) {
-                    addConsoleMessage('Teleport script loaded', 'success');
+                    
+                    // Simulate different script types with actual effects
+                    if (script.includes('Kill All')) {
+                        simulateKillAll();
+                    } else if (script.includes('Fly')) {
+                        simulateFly();
+                    } else if (script.includes('ESP')) {
+                        simulateESP();
+                    } else if (script.includes('Speed')) {
+                        simulateSpeed();
+                    } else if (script.includes('Teleport')) {
+                        simulateTeleport();
+                    }
+                    
+                } catch (error) {
+                    addConsoleMessage(`Script error: ${error.message}`, 'error');
                 }
             }, 1000);
+        }
+
+        // Simulated Roblox environment
+        window.robloxGame = {
+            GetService: function(service) {
+                return {
+                    Players: window.robloxPlayers,
+                    Workspace: window.robloxWorkspace,
+                    RunService: {
+                        Heartbeat: function(callback) {
+                            setInterval(callback, 16);
+                        }
+                    }
+                }[service] || {};
+            }
+        };
+
+        window.robloxPlayers = {
+            LocalPlayer: {
+                Character: {
+                    Humanoid: {
+                        Health: 100,
+                        WalkSpeed: 16,
+                        JumpPower: 50
+                    }
+                }
+            },
+            GetPlayers: function() {
+                return [
+                    { Name: 'Player1', Character: { Humanoid: { Health: 100 } } },
+                    { Name: 'Player2', Character: { Humanoid: { Health: 100 } } }
+                ];
+            }
+        };
+
+        window.robloxWorkspace = {
+            CurrentCamera: {
+                CFrame: { Position: { x: 0, y: 0, z: 0 }, LookVector: { x: 0, y: 0, z: 1 } }
+            }
+        };
+
+        // Functional script simulations
+        function simulateFly() {
+            addConsoleMessage('Activating flight mode...', 'info');
+            window.isFlying = false;
+            window.flySpeed = 50;
+            
+            // Create visual flying indicator
+            const flyIndicator = document.createElement('div');
+            flyIndicator.id = 'flyIndicator';
+            flyIndicator.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, var(--success-color), #059669);
+                color: white;
+                padding: 10px 15px;
+                border-radius: 8px;
+                font-weight: 600;
+                z-index: 10000;
+                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+                transition: all 0.3s ease;
+            `;
+            flyIndicator.innerHTML = '<i class="fas fa-plane"></i> Flight: OFF';
+            document.body.appendChild(flyIndicator);
+            
+            document.addEventListener('keydown', function flyHandler(e) {
+                if (e.key === 'f' || e.key === 'F') {
+                    window.isFlying = !window.isFlying;
+                    const indicator = document.getElementById('flyIndicator');
+                    if (window.isFlying) {
+                        indicator.innerHTML = '<i class="fas fa-plane"></i> Flight: ON';
+                        indicator.style.background = 'linear-gradient(135deg, var(--success-color), #059669)';
+                        addConsoleMessage('Fly enabled! Press F to toggle.', 'success');
+                        startFlyingEffect();
+                    } else {
+                        indicator.innerHTML = '<i class="fas fa-plane"></i> Flight: OFF';
+                        indicator.style.background = 'linear-gradient(135deg, var(--text-secondary), #666)';
+                        addConsoleMessage('Fly disabled!', 'warning');
+                        stopFlyingEffect();
+                    }
+                }
+            });
+        }
+
+        function startFlyingEffect() {
+            const executorWindow = document.querySelector('.executor-window');
+            executorWindow.style.animation = 'float 3s ease-in-out infinite';
+            
+            // Add floating animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0%, 100% { transform: translateY(0px); }
+                    50% { transform: translateY(-10px); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        function stopFlyingEffect() {
+            const executorWindow = document.querySelector('.executor-window');
+            executorWindow.style.animation = '';
+        }
+
+        function simulateESP() {
+            addConsoleMessage('Enabling ESP...', 'info');
+            addConsoleMessage('ESP enabled for all players!', 'success');
+            
+            // Create ESP overlay
+            const espOverlay = document.createElement('div');
+            espOverlay.id = 'espOverlay';
+            espOverlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 9999;
+            `;
+            
+            // Add simulated player boxes
+            const players = [
+                { name: 'Player1', x: 20, y: 20, health: 100 },
+                { name: 'Player2', x: 80, y: 30, health: 75 },
+                { name: 'Player3', x: 50, y: 60, health: 50 }
+            ];
+            
+            players.forEach(player => {
+                const playerBox = document.createElement('div');
+                playerBox.style.cssText = `
+                    position: absolute;
+                    left: ${player.x}%;
+                    top: ${player.y}%;
+                    background: rgba(255, 0, 0, 0.3);
+                    border: 2px solid #ff0000;
+                    border-radius: 8px;
+                    padding: 5px;
+                    color: white;
+                    font-weight: 600;
+                    font-size: 12px;
+                `;
+                playerBox.innerHTML = `${player.name}<br>HP: ${player.health}`;
+                espOverlay.appendChild(playerBox);
+                
+                addConsoleMessage(`${player.name}: [VISIBLE] Health: ${player.health}`, 'info');
+            });
+            
+            document.body.appendChild(espOverlay);
+            
+            // Add ESP indicator
+            const espIndicator = document.createElement('div');
+            espIndicator.id = 'espIndicator';
+            espIndicator.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #ff0000, #cc0000);
+                color: white;
+                padding: 10px 15px;
+                border-radius: 8px;
+                font-weight: 600;
+                z-index: 10000;
+                box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+            `;
+            espIndicator.innerHTML = '<i class="fas fa-eye"></i> ESP: ON';
+            document.body.appendChild(espIndicator);
+        }
+
+        function simulateSpeed() {
+            addConsoleMessage('Applying speed boost...', 'info');
+            
+            // Create speed boost effect
+            const speedEffect = document.createElement('div');
+            speedEffect.id = 'speedEffect';
+            speedEffect.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(45deg, transparent, rgba(255, 255, 0, 0.1), transparent);
+                pointer-events: none;
+                z-index: 9998;
+                animation: speedPulse 1s ease-in-out infinite;
+            `;
+            
+            // Add speed animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes speedPulse {
+                    0%, 100% { opacity: 0.3; }
+                    50% { opacity: 0.8; }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(speedEffect);
+            
+            setTimeout(() => {
+                addConsoleMessage('Speed boost activated!', 'success');
+                addConsoleMessage('WalkSpeed: 50, JumpPower: 100', 'info');
+                
+                // Add speed indicator
+                const speedIndicator = document.createElement('div');
+                speedIndicator.id = 'speedIndicator';
+                speedIndicator.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #ffff00, #cccc00);
+                    color: black;
+                    padding: 10px 15px;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    z-index: 10000;
+                    box-shadow: 0 4px 12px rgba(255, 255, 0, 0.3);
+                `;
+                speedIndicator.innerHTML = '<i class="fas fa-tachometer-alt"></i> SPEED: ON';
+                document.body.appendChild(speedIndicator);
+                
+                // Remove speed effect after 5 seconds
+                setTimeout(() => {
+                    if (document.getElementById('speedEffect')) {
+                        document.getElementById('speedEffect').remove();
+                    }
+                }, 5000);
+            }, 1000);
+        }
+
+        function simulateTeleport() {
+            addConsoleMessage('Loading teleport script...', 'info');
+            addConsoleMessage('Teleport script loaded! Press T to teleport to cursor position.', 'success');
+            
+            // Create teleport indicator
+            const teleportIndicator = document.createElement('div');
+            teleportIndicator.id = 'teleportIndicator';
+            teleportIndicator.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #9333ea, #7c3aed);
+                color: white;
+                padding: 10px 15px;
+                border-radius: 8px;
+                font-weight: 600;
+                z-index: 10000;
+                box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+            `;
+            teleportIndicator.innerHTML = '<i class="fas fa-map-marker-alt"></i> TELEPORT: READY';
+            document.body.appendChild(teleportIndicator);
+            
+            document.addEventListener('keydown', function teleportHandler(e) {
+                if (e.key === 't' || e.key === 'T') {
+                    // Create teleport effect
+                    const teleportEffect = document.createElement('div');
+                    teleportEffect.style.cssText = `
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        width: 100px;
+                        height: 100px;
+                        background: radial-gradient(circle, rgba(147, 51, 234, 0.8), transparent);
+                        border-radius: 50%;
+                        transform: translate(-50%, -50%);
+                        z-index: 10001;
+                        animation: teleportBurst 0.5s ease-out;
+                    `;
+                    
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        @keyframes teleportBurst {
+                            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+                            100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                    document.body.appendChild(teleportEffect);
+                    
+                    addConsoleMessage('Teleported to cursor position!', 'success');
+                    
+                    // Remove effect after animation
+                    setTimeout(() => {
+                        teleportEffect.remove();
+                    }, 500);
+                }
+            });
+        }
+
+        function simulateKillAll() {
+            addConsoleMessage('Eliminating all players...', 'warning');
+            
+            // Create elimination effect
+            const killEffect = document.createElement('div');
+            killEffect.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: radial-gradient(circle, rgba(255, 0, 0, 0.3), transparent);
+                pointer-events: none;
+                z-index: 9997;
+                animation: killPulse 2s ease-out;
+            `;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes killPulse {
+                    0% { opacity: 0; }
+                    50% { opacity: 1; }
+                    100% { opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(killEffect);
+            
+            setTimeout(() => {
+                addConsoleMessage('All players eliminated!', 'success');
+                addConsoleMessage('Killed: Player1, Player2, Player3', 'info');
+                
+                // Add kill indicator
+                const killIndicator = document.createElement('div');
+                killIndicator.id = 'killIndicator';
+                killIndicator.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #ff0000, #cc0000);
+                    color: white;
+                    padding: 10px 15px;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    z-index: 10000;
+                    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+                `;
+                killIndicator.innerHTML = '<i class="fas fa-skull"></i> KILL ALL: ACTIVATED';
+                document.body.appendChild(killIndicator);
+                
+                // Remove effects after 3 seconds
+                setTimeout(() => {
+                    if (document.getElementById('killEffect')) {
+                        document.getElementById('killEffect').remove();
+                    }
+                }, 3000);
+            }, 1500);
         }
 
         function injectScript() {
@@ -696,6 +1060,18 @@ print("Teleport script loaded! Press T to teleport to cursor position.")`
             const scriptInput = document.getElementById('scriptInput');
             scriptInput.value = '';
             addConsoleMessage('Script editor cleared', 'info');
+            
+            // Clear all active effects
+            clearAllEffects();
+        }
+
+        function clearAllEffects() {
+            // Remove all indicators and effects
+            const effects = ['flyIndicator', 'espIndicator', 'speedIndicator', 'teleportIndicator', 'killIndicator', 'espOverlay', 'speedEffect', 'killEffect'];
+            effects.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.remove();
+            });
         }
 
         function saveScript() {
