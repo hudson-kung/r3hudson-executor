@@ -1,19 +1,20 @@
 // Executor Download Function
 function downloadExecutor() {
-    // Create a mock download for demonstration
-    const link = document.createElement('a');
-    link.href = '#'; // Replace with actual download URL when available
-    link.download = 'R3Hudson-Executor-v3.0.1.exe';
-    link.style.display = 'none';
+    // Open executor UI in new window
+    const features = 'width=900,height=525,scrollbars=yes,resizable=yes,location=no,menubar=no,toolbar=no';
+    const executorWindow = window.open('executor.html', 'R3Hudson Executor', features);
     
-    // Show download notification
-    showNotification('Download started! R3Hudson Executor v3.0.1');
-    
-    // For demo purposes, just show notification instead of actual download
-    // In production, replace '#' with the actual download URL
-    setTimeout(() => {
-        showNotification('Download completed! Check your downloads folder.');
-    }, 2000);
+    if (executorWindow) {
+        executorWindow.focus();
+        showNotification('Executor UI opened! Download will start automatically...');
+        
+        // Simulate download after opening executor
+        setTimeout(() => {
+            showNotification('R3Hudson Executor v3.0.1 ready to use!');
+        }, 1500);
+    } else {
+        showNotification('Popup blocked! Please allow popups for this site to open the executor.');
+    }
 }
 
 // Subscribe Modal Functions
