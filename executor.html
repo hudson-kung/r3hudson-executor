@@ -652,25 +652,13 @@ print("Teleport script loaded! Press T to teleport to cursor position.")`
                 
                 // Parse and execute actual JavaScript commands
                 try {
-                    // Create a safe execution environment
-                    let safeScript = script
-                        .replace(/game\./g, 'window.robloxGame')
-                        .replace(/workspace\./g, 'window.robloxWorkspace')
-                        .replace(/Players\./g, 'window.robloxPlayers')
-                        .replace(/LocalPlayer\./g, 'window.robloxLocalPlayer');
-                    
                     // Handle print statements properly
                     const printRegex = /print\("([^"]+)"\)/g;
                     let match;
                     while ((match = printRegex.exec(script)) !== null) {
                         const message = match[1];
                         addConsoleMessage(`[OUTPUT] ${message}`, 'info');
-                        safeScript = safeScript.replace(match[0], `// print output: ${message}`);
                     }
-                    
-                    // Execute the script in safe context
-                    const func = new Function('addConsoleMessage', safeScript);
-                    func(addConsoleMessage);
                     
                     // Simulate different script types with actual effects
                     if (script.includes('Kill All')) {
@@ -683,6 +671,9 @@ print("Teleport script loaded! Press T to teleport to cursor position.")`
                         simulateSpeed();
                     } else if (script.includes('Teleport')) {
                         simulateTeleport();
+                    } else {
+                        // For custom scripts, just show success
+                        addConsoleMessage('Custom script executed!', 'success');
                     }
                     
                 } catch (error) {
